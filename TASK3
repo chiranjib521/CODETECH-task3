@@ -1,0 +1,45 @@
+import socket
+import itertools
+
+# ---------------- PORT SCANNER MODULE ----------------
+def port_scanner(target, ports=[21,22,23,25,53,80,110,143,443,445,3389]):
+    print(f"\n[+] Starting Port Scan on {target} ...")
+    for port in ports:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(0.5)
+        try:
+            result = s.connect_ex((target, port))
+            if result == 0:
+                print(f"    [OPEN] Port {port} is open")
+            s.close()
+        except socket.error:
+            pass
+    print("[+] Port Scan Completed!\n")
+
+# ---------------- SIMPLE BRUTE-FORCE MODULE ----------------
+def brute_force_login(username_list, password_list):
+    print("[+] Starting Brute Force Simulation...")
+    for username, password in itertools.product(username_list, password_list):
+        print(f"    Trying Username: {username} | Password: {password}")
+        # Simulate check (replace with real authentication testing if required)
+        if username == "admin" and password == "1234":
+            print(f"[SUCCESS] Credentials found: {username}:{password}")
+            return
+    print("[+] Brute Force Completed! No valid credentials found.\n")
+
+# ---------------- MAIN MENU ----------------
+if __name__ == "__main__":
+    print("==== Penetration Testing Toolkit ====")
+    print("1. Port Scanner")
+    print("2. Brute Force Simulation")
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        target = input("Enter target IP or domain: ").strip()
+        port_scanner(target)
+    elif choice == "2":
+        usernames = ["admin", "user", "guest"]
+        passwords = ["1234", "password", "admin", "guest"]
+        brute_force_login(usernames, passwords)
+    else:
+        print("Invalid choice! Exiting...")
